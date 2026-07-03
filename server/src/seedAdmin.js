@@ -1,9 +1,6 @@
 import dotenv from "dotenv";
 dotenv.config();
 
-import mongoose from "mongoose";
-import bcrypt from "bcryptjs";
-
 import User from "./models/user.model.js";
 import connectDB from "./config/db.js";
 
@@ -17,22 +14,20 @@ const seedAdmin = async () => {
 
     if (exists) {
       console.log("Admin already exists");
-      process.exit();
+      process.exit(0);
     }
-
-    const hashedPassword = await bcrypt.hash("Admin@123", 10);
 
     await User.create({
       name: "Admin",
       email: "admin@crm.com",
-      password: hashedPassword,
+      password: "Admin@123", // Plain password
       role: "Admin",
     });
 
-    console.log("Admin Created Successfully");
-    process.exit();
+    console.log("✅ Admin Created Successfully");
+    process.exit(0);
   } catch (error) {
-    console.log(error);
+    console.error(error);
     process.exit(1);
   }
 };
