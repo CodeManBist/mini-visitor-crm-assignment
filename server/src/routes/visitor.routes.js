@@ -33,6 +33,6 @@ router.get("/history", getVisitorHistory);
 router.get("/:id", getVisitorById);
 
 // Visitor Check Out
-router.put("/:id/checkout", checkOutVisitor);
+router.patch("/:id/checkout", checkOutVisitor);
 
 export default router;
