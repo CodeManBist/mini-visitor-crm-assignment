@@ -20,6 +20,10 @@ app.use(helmet());
 
 app.use(morgan("dev"));
 
+app.get("/test", (req, res) => {
+  res.json({ message: "Server is running!" });
+});
+
 app.use("/api/auth", authRoutes);
 
 app.use("/api/customers", customerRoutes);
