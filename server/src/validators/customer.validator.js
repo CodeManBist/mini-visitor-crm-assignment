@@ -1,21 +1,41 @@
-import { body } from "express-validator";
+import { body, validationResult } from "express-validator";
 
 export const customerValidation = [
+  body("name")
+    .trim()
+    .notEmpty()
+    .withMessage("Name is required"),
 
-    body("name")
-        .notEmpty()
-        .withMessage("Name Required"),
+  body("email")
+    .trim()
+    .isEmail()
+    .withMessage("Please provide a valid email"),
 
-    body("email")
-        .isEmail()
-        .withMessage("Invalid Email"),
+  body("phone")
+    .trim()
+    .matches(/^[6-9]\d{9}$/)
+    .withMessage("Please provide a valid 10-digit phone number"),
 
-    body("phone")
-        .isLength({ min: 10, max: 10 })
-        .withMessage("Phone Must Be 10 Digits"),
+  body("company")
+    .trim()
+    .notEmpty()
+    .withMessage("Company is required"),
 
-    body("company")
-        .notEmpty()
-        .withMessage("Company Required")
-
+  body("status")
+    .optional()
+    .isIn(["Active", "Inactive"])
+    .withMessage("Status must be Active or Inactive"),
 ];
+
+export const validate = (req, res, next) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).json({
+      success: false,
+      errors: errors.array(),
+    });
+  }
+
+  next();
+};
